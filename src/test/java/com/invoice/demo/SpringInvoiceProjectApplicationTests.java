@@ -43,7 +43,7 @@ class InvoiceControllerTest {
 	}
 
 	@Test
-	public void testGetTenderDetailsByCustomerId() throws FileNotFoundException {
+	public void testGetTenderDetailsByCustomerId() throws Exception {
 		long customerId = 1;
 
 		// Create sample tender details
@@ -66,13 +66,13 @@ class InvoiceControllerTest {
 		long customerId = 12345L;
 
 		// Mock the service method to throw an exception
-		when(invoiceService.getInvoiceId(anyLong())).thenThrow(new NotFoundException());
+		when(invoiceService.getInvoiceId(anyLong())).thenThrow(new Exception());
 
 		// Perform the request
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/customers/{customerId}/invoices", customerId)
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isNotFound())
 				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(HttpStatus.NOT_FOUND.value()))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Customer not found"));
+				.andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Customer ID not found"));
 	}
 }

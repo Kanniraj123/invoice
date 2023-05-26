@@ -24,7 +24,7 @@ public class InvoiceController {
 	private InvoiceService service;
 
 	@GetMapping("/customer/{customerId}")
-	public Map<Long, String> getInvoices(@PathVariable long customerId) throws FileNotFoundException {
+	public Map<Long, String> getInvoices(@PathVariable long customerId) throws Exception {
 		// Perform logic to retrieve invoices and tender types based on the customer ID
 		Map<Long, String> invoiceMap = new HashMap<>();
 		// retriving inid
@@ -43,7 +43,7 @@ public class InvoiceController {
 
 		// handling negative scenario
 		if (invoiceMap.size() == 0)
-			throw new FileNotFoundException();
+			throw new Exception();
 
 		return invoiceMap;
 	}
