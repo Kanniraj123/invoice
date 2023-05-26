@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.invoice.demo.entity.Invoice;
 import com.invoice.demo.entity.TenderDetails;
 import com.invoice.demo.repository.InvoiceRepository;
 
@@ -15,17 +16,18 @@ public class InvoiceService {
     private InvoiceRepository invoiceRepository;
 	
 
-    public TenderDetails getTenderDetailsByCustId(Long customer_id) {
-        if(invoiceRepository.findById(customer_id).get() != null) {
-        	return invoiceRepository.findById(customer_id).get().getInvoice_data().getTenderDetails();
+    public TenderDetails getTenderDetailsByInvoiceId(Long invoice_id) {
+        if(invoiceRepository.findByInvoiceId(invoice_id).get() != null) {
+        	return invoiceRepository.findByInvoiceId(invoice_id).get().getInvoice_data().getTenderDetails();
         }
         return null;
     }
 
 
-	public Long getInvoiceId(Long customer_id) {
+	public List<Invoice> getInvoiceId(long customer_id) {
 		if(invoiceRepository.findById(customer_id).get() != null) {
-			return invoiceRepository.findById(customer_id).get().getInvoice_id();
+			List<Invoice> list = invoiceRepository.findAllById(customer_id);
+			return list;
 		}
 		return null;
 	}

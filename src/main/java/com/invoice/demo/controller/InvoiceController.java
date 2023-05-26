@@ -12,6 +12,7 @@ import com.invoice.demo.service.InvoiceService;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -23,20 +24,27 @@ public class InvoiceController {
 	private InvoiceService service;
 
 	@GetMapping("/customer/{customerId}")
-	public Map<Long, TenderDetails> getInvoices(@PathVariable long customerId) throws FileNotFoundException {
+	public Map<Long, String> getInvoices(@PathVariable long customerId) throws FileNotFoundException {
 		// Perform logic to retrieve invoices and tender types based on the customer ID
-		Map<Long, TenderDetails> invoiceMap = new HashMap<>();
-		//retriving inid 
-		Long inid = service.getInvoiceId(customerId);
-		
-		//retirving tender details
-		TenderDetails td = service.getTenderDetailsByCustId(customerId);
+		Map<Long, String> invoiceMap = new HashMap<>();
+		// retriving inid
+		List<Invoice> inid = service.getInvoiceId(customerId);
 
-		if (inid == null && td == null)
+		// retirving tender details
+		for (int i = 0; i < inid.size(); i++) {
+
+			Long temp = inid.get(i).getInvoice_id();
+			if (temp != null) {
+				String td = service.getTenderDetailsByInvoiceId(temp).getType();
+				// frame a response in hashmap
+				invoiceMap.put(temp, td);
+			}
+		}
+
+		// handling negative scenario
+		if (invoiceMap.size() == 0)
 			throw new FileNotFoundException();
-		// frame a response in hashmap
-		invoiceMap.put(inid, td);
-		
+
 		return invoiceMap;
 	}
 }

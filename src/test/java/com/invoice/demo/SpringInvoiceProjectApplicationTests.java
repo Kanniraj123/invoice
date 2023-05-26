@@ -47,15 +47,15 @@ class InvoiceControllerTest {
 		long customerId = 1;
 
 		// Create sample tender details
-		Map<Long, TenderDetails> expectedTenderDetails = new HashMap<>();
+		Map<Long, String> expectedTenderDetails = new HashMap<>();
 		TenderDetails td = new TenderDetails(23.43, "cash");
-		expectedTenderDetails.put(54L, td);
+		expectedTenderDetails.put(54L, "cash");
 
 		// Mock the tenderService to return the expected tender details
-		when(invoiceService.getTenderDetailsByCustId(anyLong())).thenReturn(td);
+		when(invoiceService.getTenderDetailsByInvoiceId(anyLong())).thenReturn(td);
 
 		// Call the controller method
-		Map<Long, TenderDetails> actualTenderDetails = invoiceController.getInvoices(customerId);
+		Map<Long, String> actualTenderDetails = invoiceController.getInvoices(customerId);
 
 		// Verify the result
 		assertEquals(expectedTenderDetails, actualTenderDetails);
